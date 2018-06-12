@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="HKLCF">
+  <title>Offcloud Remote</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css">
+  <style>
+  body {
+    background-color: #2a2a2a;
+    color: #ffffff;
+  }
+  #result {
+    margin-top: 20px;
+  }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+<img src="images/logo-text.png">
+<div id="result"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script>
+api_key = '<API_KEY>';
+requestid = window.location.href.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + '?requestid=', '');
+
+$.ajax({
+  url: 'https://offcloud.com/api/remote/status?apikey=' + api_key,
+  data: {'requestId': requestid},
+  type: 'POST',
+  crossDomain: true,
+  success: function(data) {
+    console.log(data);
+    if(data.error) {
+      $("#result").html('<p class="text-left h3">' + data.error + '</p>');
+    } else {
+      $("#result").html('<p class="text-left h3">' + data.status.fileName + '</p><p class="text-left">File Size: ' + data.status.fileSize + '</p><p class="text-left">Request Id: ' + data.status.requestId + '</p><p class="text-left">Status: ' + data.status.status + '</p>');
+    }
+  },
+  error: function() {
+    console.log('Failed!');
+  }
+});
+</script>
+</body>
+</html>
