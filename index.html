@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="HKLCF">
+  <title>Offcloud Remote</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css">
+  <style>
+  body {
+    background-color: #2a2a2a;
+    color: #ffffff;
+  }
+  #result {
+    margin-top: 20px;
+  }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+<img src="images/logo-text.png">
+<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-lg">Link</span>
+  </div>
+  <input type="text" id="dl_link" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Input any sort of link here (http, https, ftp, magnet, ...)">
+  <div class="input-group-append">
+    <button class="btn btn-warning" type="button" id="dl_btn">Download</button>
+  </div>
+</div>
+<div id="result"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script>
+api_key = '<API_KEY>';
+remote_option_id = '<remoteOptionId>';
+folder_id = '<folderId>';
+
+$("#dl_btn").click(function() {
+  $("#result").html('');
+  $.ajax({
+    url: 'https://offcloud.com/api/remote/download?apikey=' + api_key,
+    data: {'url': $("#dl_link").val(), 'remoteOptionId': remote_option_id, 'folderId': folder_id},
+    type: 'POST',
+    crossDomain: true,
+    success: function(data) {
+      console.log(data);
+      if(data.error) {
+        $("#result").html('<p class="text-left h3">' + data.error + '</p>');
+      } else {
+        $("#result").html('<p class="text-left h3">' + data.status + '</p><p class="text-left">Created On: ' + data.createdOn + '</p><p class="text-left">Original Link: ' + data.originalLink + '</p><p class="text-left">Request Id: <a href="status.html?requestid=' + data.requestId + '" target="_blank">' + data.requestId + '</a></p>');
+      }
+    },
+    error: function() {
+      console.log('Failed!');
+    }
+  });
+});
+</script>
+</body>
+</html>
