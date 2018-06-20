@@ -58,6 +58,12 @@ $("#dl_btn").click(function() {
     }
   });
 });
+
+$(document).keypress(function(e) {
+  if(e.which == 13) {
+    $("#dl_btn").click();
+  }
+});
 </script>
 </body>
 </html>
